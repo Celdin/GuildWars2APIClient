@@ -11,29 +11,26 @@ public class Client {
 	public static String get(String URL) {
 		try {
 			URL url = new URL(URL);
-			System.getProperties().put("proxySet", "true");
-			System.getProperties().put("https.proxyHost",
-					"fr-proxy.groupinfra.com");
-			System.getProperties().put("https.proxyPort", "3128");
+			// System.getProperties().put("proxySet", "true");
+			// System.getProperties().put("https.proxyHost",
+			// "fr-proxy.groupinfra.com");
+			// System.getProperties().put("https.proxyPort", "3128");
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("GET");
 			conn.setRequestProperty("Accept", "application/json");
 			conn.setRequestProperty("Accept-Language", "fr");
-			conn.setRequestProperty(
-					"Authorization",
-					"Bearer "
-							+ "D8883947-9C76-F743-AD83-155421CA4A196F234D25-2183-4E4F-B585-AA5D4249A406");
+			conn.setRequestProperty("Authorization",
+					"Bearer " + "18E60366-D2C0-9A4E-AEC1-340E69B9312CED169BF5-8723-4BD5-A308-D6CA7CD2990F");
 
 			int code = conn.getResponseCode();
-			if (code != 200) {
+			if (code != 200 && code != 206) {
 				// System.out.println("Failed : HTTP error code : "
 				// + conn.getResponseCode());
-				// System.out.println("	at :" + URL);
+				// System.out.println(" at :" + URL);
 				return "{}";
 			}
 
-			BufferedReader br = new BufferedReader(new InputStreamReader(
-					(conn.getInputStream())));
+			BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
 
 			String output;
 			String concat = "";

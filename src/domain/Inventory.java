@@ -28,6 +28,18 @@ public class Inventory {
 		fromJSON(json);
 	}
 
+	public Inventory clone() {
+		Inventory inventory = new Inventory();
+		inventory.setId(id);
+		inventory.setCount(count);
+		inventory.setSkin(skin);
+		inventory.setUpgrades(upgrades);
+		inventory.setInfusions(infusions);
+		inventory.setBinding(BINDING);
+		inventory.setBoundTo(boundTo);
+		return inventory;
+	}
+
 	public Inventory() {
 
 	}

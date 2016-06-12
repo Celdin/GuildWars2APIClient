@@ -3,16 +3,16 @@ package query;
 import java.util.ArrayList;
 import java.util.List;
 
-import lang.Locale;
-
+import org.apache.commons.lang.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import client.Client;
 import domain.Item;
+import lang.Locale;
 
 public class ItemQuery {
-	private static final String URL_ITEM = "items/";
+	private static final String URL_ITEM = "items";
 
 	public static List<Integer> get() {
 		String data = Client.get(Locale.BASE_URL + URL_ITEM);
@@ -25,8 +25,30 @@ public class ItemQuery {
 	}
 
 	public static Item get(Integer id) {
-		String data = Client.get(Locale.BASE_URL + URL_ITEM + id);
+		String data = Client.get(Locale.BASE_URL + URL_ITEM + "/" + id);
 		return new Item(new JSONObject(data));
+	}
+
+	public static List<Item> get(List<Integer> ids) {
+		String data = Client.get(Locale.BASE_URL + URL_ITEM + "?ids=" + StringUtils.join(ids, ','));
+		List<Item> items = new ArrayList<>();
+		if (data.charAt(0) == '[') {
+			JSONArray array = new JSONArray(data);
+			int i = 0;
+			Item item = new Item(array.getJSONObject(i));
+			for (Integer id : ids) {
+				if (item.getId().equals(id)) {
+					items.add(item);
+					if (i < array.length() - 1) {
+						i++;
+						item = new Item(array.getJSONObject(i));
+					}
+				} else {
+					items.add(null);
+				}
+			}
+		}
+		return items;
 	}
 
 	public static Integer search(String name) {
